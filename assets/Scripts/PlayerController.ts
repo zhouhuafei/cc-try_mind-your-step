@@ -4,6 +4,9 @@ const { ccclass, property } = _decorator
 
 @ccclass('PlayerController')
 export class PlayerController extends Component {
+  @property({ type: Animation })
+  public BodyAnim: Animation | null = null
+
   // 是否接收到跳跃指令
   private _startJump: boolean = false
   // 跳跃步长
@@ -41,6 +44,14 @@ export class PlayerController extends Component {
     this._curJumpSpeed = this._jumpStep / this._jumpTime
     this.node.getPosition(this._curPos)
     Vec3.add(this._targetPos, this._curPos, new Vec3(this._jumpStep, 0, 0))
+
+    if (this.BodyAnim) {
+      if (step === 1) {
+        this.BodyAnim.play('oneStep')
+      } else if (step === 2) {
+        this.BodyAnim.play('twoStep')
+      }
+    }
   }
 
   update (deltaTime: number) {
